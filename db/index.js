@@ -1,7 +1,15 @@
 const inquirer = require ('inquirer');
+const db = require('./connection')
+
 require('dotenv').config();
-const { allDepts, allRoles } = require('./server')
+const { allDepts, allRoles, allEmps, addDept, addRole, addEmp } = require('../server')
+db.connect(function(err){
+    if (err) throw err
+    runPrompt()
+})
+
 const options = ["View All Departments", "View All Roles", "View All Employees", "Add New Department", "Add New Role", "Add New Employee", "Update Employee Role"]
+
 function runPrompt () {
     inquirer.prompt([
         {type:"list",
@@ -13,22 +21,28 @@ function runPrompt () {
         .then ((answer) => {
             console.log(answer);
             switch (answer.options) {
-                case opt[0]:
+                case options[0]:
                     allDepts();
                     break;
-                case opt[1]:
+                case options[1]:
                     allRoles();
                     break;
-                case opt[2]:
+                case options[2]:
+                    allEmps();
+                    break;   
+                case options[3]:
+                    addDept();
                     break;
-                case opt[3]:
+                case options[4]:
+                    addRole();
                     break;
-                case opt[4]:
+                case options[5]:
+                    addEmp();
                     break;
-                case opt[5]:
-                    break;
-                case opt[6]:
-                    break;
+                // case opt[5]:
+                //     break;
+                // case opt[6]:
+                //     break;
                     
 
             }
@@ -38,5 +52,5 @@ function runPrompt () {
 
 
 
-
-runPrompt();
+module.exports = runPrompt
+// runPrompt();
