@@ -22,7 +22,7 @@ db.query('SELECT *  FROM employee INNER JOIN emp_role ON employee.role_id = emp_
             type: 'list',
             name: "empManager",
             message: "Who is your employees manager?",
-            choices: res.map(role=>role.full_name).slice(0,2)
+            choices: res.map(role=>role.first_name)
         },
 
     ])

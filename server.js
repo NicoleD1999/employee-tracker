@@ -78,13 +78,13 @@ function addRole () {
 
 function addEmp () {
     runPrompt = require('./db/index')
-    db.query('SELECT *  FROM employee INNER JOIN emp_role ON employee.role_id = emp_role.id', (err, res)=>{
+    db.query('SELECT * FROM employee INNER JOIN emp_role ON employee.role_id = emp_role.id', (err, res)=>{
         inquirer.prompt([
             {
                 type: 'list',
                 name: 'empId',
                 message: 'What role is the role of your new employee?',
-                choices: res.map(role=>role.title).slice(0,8)
+                choices: res.map(role=>role.title)
             },
             {
                 type: 'input',
@@ -100,17 +100,17 @@ function addEmp () {
                 type: 'list',
                 name: "empManager",
                 message: "Who is your employees manager?",
-                choices: res.map(role=>role.full_name).slice(0,2)
+                choices: res.map(role=>role.first_name).slice(0,2)
             },
 
         ]).then(response=>{
             const selectedTitle = res.find(role=>role.title === response.empId)
-            const selectedManager = res.find(role=>role.manager_id === response.empManager)
-            db.query('INSERT INTO emp_role SET ?', {
+            const selectedManager = res.find(role=>role.first_name === response.empManager)
+            db.query('INSERT INTO employee SET ?', {
                 first_name: response.firstName,
-                last_name: response.last_name,
+                last_name: response.lastName,
                 role_id: selectedTitle.id,
-                manager_id: selectedManager.id
+                manager_id: selectedManager.manager_id
             })
             console.log('New employee added!')
             runPrompt();
@@ -119,8 +119,46 @@ function addEmp () {
 }
 
 function updateEmp () {
-    db.query ("SELECT= ? FROM employee")
+    db.query('SELECT * FROM employee', (err, res)=>{
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'empName',
+                message: 'Which employee would you like to update',
+                choices: res.map(emp=>emp.first_name)
+            },
+            {
+                type: 'input',
+                name: 'firstName',
+                message: "What is your employees first name?",
+            },
+            {
+                type: 'input',
+                name: "lastName",
+                message: "What is your employees last name?"
+            },
+            {
+                type: 'list',
+                name: "empManager",
+                message: "Who is your employees manager?",
+                choices: res.map(role=>role.first_name).slice(0,2)
+            },
+        ]).then(response=>{
+            const selectedEmployee = res.find(emp=>emp.first_name === response.empName)
+            const selectedManager = res.find(role=>role.first_name === response.empManager)
+            db.query('UPDATE employee SET ? WHERE id = ?', {
+                first_name: response.firstName,
+                last_name: response.lastName,
+                role_id: selectedEmployee.id,
+                manager_id: selectedManager.manager_id,
+            })
+            console.log('Employee has been updated!')
+            runPrompt();
+        })
+    })
 }
+
+
 module.exports = {
     allDepts, allRoles, allEmps, addDept, addRole, addEmp, updateEmp
 }
