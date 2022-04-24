@@ -78,13 +78,13 @@ function addRole () {
 
 function addEmp () {
     runPrompt = require('./db/index')
-    db.query('SELECT * FROM emp_role', (err, res)=>{
+    db.query('SELECT *  FROM employee INNER JOIN emp_role ON employee.role_id = emp_role.id', (err, res)=>{
         inquirer.prompt([
             {
                 type: 'list',
                 name: 'empId',
                 message: 'What role is the role of your new employee?',
-                choices: res.map(role=>role.title)
+                choices: res.map(role=>role.title).slice(0,8)
             },
             {
                 type: 'input',
@@ -97,10 +97,10 @@ function addEmp () {
                 message: "What is your employees last name?"
             },
             {
-                type: 'choices',
+                type: 'list',
                 name: "empManager",
                 message: "Who is your employees manager?",
-                choices: res.map(role=>role.manager_id)
+                choices: res.map(role=>role.full_name).slice(0,2)
             },
 
         ]).then(response=>{
