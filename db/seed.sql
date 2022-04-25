@@ -32,6 +32,4 @@ VALUES(1, "Michael", "Scott", 8, 1),
 
 
 
-SELECT * FROM employee INNER JOIN emp_role ON employee.role_id = emp_role.id 
-SELECT CONCAT(first_name, ' ', last_name) AS full_name,  FROM employee;
 
