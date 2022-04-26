@@ -50,18 +50,18 @@ function addRole () {
             {
                 type: 'list',
                 name: 'deptId',
-                message: 'What department is your employee in?',
+                message: 'What department is your new role in?',
                 choices: res.map(department=>department.name)
             },
             {
                 type: 'input',
                 name: 'addSalary',
-                message: "What is your employees salary?",
+                message: "What is the salary of your new role",
             },
             {
                 type: 'input',
                 name: "addTitle",
-                message: "What is your employees job title?"
+                message: "What is the title of your new role?"
             }
         ]).then(response=>{
             const selectedDept = res.find(department=>department.name === response.deptId)
