@@ -1,8 +1,8 @@
 const inquirer = require ('inquirer');
-const db = require('./connection')
+const db = require('./db/connection')
 
 require('dotenv').config();
-const { allDepts, allRoles, allEmps, addDept, addRole, addEmp, updateRole, finished} = require('../server')
+const { allDepts, allRoles, allEmps, addDept, addRole, addEmp, updateRole, finished} = require('./db/server')
 db.connect(function(err){
     if (err) throw err
     runPrompt()
@@ -53,4 +53,3 @@ function runPrompt () {
 
 
 module.exports = runPrompt
-// runPrompt();

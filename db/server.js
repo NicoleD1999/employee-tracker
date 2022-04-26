@@ -1,8 +1,8 @@
-const db = require('./db/connection.js')
+const db = require('./connection')
 const inquirer = require('inquirer')
 let runPrompt;
 function allDepts() {
-    runPrompt = require('./db/index')
+    runPrompt = require('../index')
     db.query('SELECT * FROM emp_department', function (err, results) {
         console.table(results);
         runPrompt();
@@ -10,7 +10,7 @@ function allDepts() {
 }
 
 function allRoles() {
-    runPrompt = require('./db/index')
+    runPrompt = require('../index')
     db.query('SELECT * FROM emp_role', function (err, results) {
         console.table(results);
         runPrompt();
@@ -18,7 +18,7 @@ function allRoles() {
 }
 
 function allEmps(){
-    runPrompt = require('./db/index')
+    runPrompt = require('../index')
     db.query('SELECT * FROM employee', function (err, results) {
         console.table(results);
         runPrompt();
@@ -26,7 +26,7 @@ function allEmps(){
 }
 
 function addDept () {
-    runPrompt = require('./db/index')
+    runPrompt = require('../index')
     inquirer.prompt ([
         {
             type: 'input',
@@ -44,7 +44,7 @@ function addDept () {
 }
 
 function addRole () {
-    runPrompt = require('./db/index')
+    runPrompt = require('../index')
     db.query('SELECT * FROM emp_department', (err, res)=>{
         inquirer.prompt([
             {
@@ -77,7 +77,7 @@ function addRole () {
 }
 
 function addEmp () {
-    runPrompt = require('./db/index')
+    runPrompt = require('../index')
     db.query('SELECT * FROM employee INNER JOIN emp_role ON employee.role_id = emp_role.id GROUP BY emp_role.title', (err, res)=>{
         inquirer.prompt([
             {
@@ -120,7 +120,7 @@ function addEmp () {
 
 
 function updateRole () {   
-    runPrompt = require('./db/index')
+    runPrompt = require('../index')
 
     db.query("SELECT * FROM employee", (err, resultsEmp) => {
         if (err) throw err;
@@ -167,7 +167,6 @@ function updateRole () {
             
         ], (err, results) => {
             if (err) throw err;
-
             console.log('Employee role has been updated!')
             runPrompt();
         });
